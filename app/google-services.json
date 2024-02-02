@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "340468891199",
+    "project_id": "estudos-897d8",
+    "storage_bucket": "estudos-897d8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340468891199:android:638f825e6eb13276df428a",
+        "android_client_info": {
+          "package_name": "com.talespalma.menssagebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDvGsCaGWf-dmpnYVnT7cCkD9_vnkbmwU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

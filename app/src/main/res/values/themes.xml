@@ -1,0 +1,13 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.MenssageBase" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="actionOverflowButtonStyle">@style/ActionOverFlow</item>
+    </style>
+    <!--Theme padrao-->
+    <style name="Theme.MenssageBase" parent="Base.Theme.MenssageBase" />
+    <!--Over flow theme tin-->
+    <style name="ActionOverFlow" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="tint">@color/white</item>
+    </style>
+</resources>
