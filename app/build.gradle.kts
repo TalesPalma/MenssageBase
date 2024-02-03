@@ -49,7 +49,8 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")//Google Cloud Firestore
     implementation("com.google.firebase:firebase-storage") //Google Cloud Storage
 
-
+    //Picasso
+    implementation("com.squareup.picasso:picasso:2.8")
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")

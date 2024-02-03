@@ -73,7 +73,7 @@ class LoginActivity : AppCompatActivity() {
         val userUid = firebaseAuth.currentUser
         if(userUid != null){
             startActivity(Intent(this,MainActivity::class.java))
-            toastMenssage("Usurio está logado")
+            toastMenssage("Usuario está logado")
         }
     }
 

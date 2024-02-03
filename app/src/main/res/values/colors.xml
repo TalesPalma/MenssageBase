@@ -2,6 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="whiteTextColor">#000000</color>
     <color name="colorPrimary">#094191</color>
     <color name="colorToolBar">#0C53B9</color>
     <color name="highlightColor">#0997f6</color>

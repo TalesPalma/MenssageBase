@@ -6,4 +6,74 @@
     android:layout_height="match_parent"
     tools:context=".PerfilActivity">
 
+    <include
+        android:id="@+id/includeToolBar"
+        layout="@layout/tool_bar_custom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/perfil_ImageView"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/includeToolBar"
+        app:shapeAppearanceOverlay="@style/borderStyle"
+        app:srcCompat="@drawable/user_image" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/perfil_FloatAddPicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/highlightColor"
+        android:clickable="true"
+        android:contentDescription="@string/add_photo_image"
+        android:focusable="true"
+        app:backgroundTint="@color/highlightColor"
+        app:elevation="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/perfil_ImageView"
+        app:layout_constraintEnd_toEndOf="@+id/perfil_ImageView"
+        app:srcCompat="@drawable/add_photo_gelery"
+        app:tint="#FFFFFF" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/perfil_InputName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/perfil_ImageView">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/perfil_editNome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Your name" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/perfil_btnUpdate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Update"
+        app:cornerRadius="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/perfil_InputName" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
