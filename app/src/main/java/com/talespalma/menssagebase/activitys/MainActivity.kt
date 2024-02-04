@@ -1,4 +1,4 @@
-package com.talespalma.menssagebase
+package com.talespalma.menssagebase.activitys
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -12,7 +12,7 @@ import androidx.core.view.MenuProvider
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.talespalma.menssagebase.Adapters.ViewPageAdapter
-import com.talespalma.menssagebase.databinding.ActivityLoginBinding
+import com.talespalma.menssagebase.R
 import com.talespalma.menssagebase.databinding.ActivityMainBinding
 import com.talespalma.menssagebase.utils.toastMenssage
 

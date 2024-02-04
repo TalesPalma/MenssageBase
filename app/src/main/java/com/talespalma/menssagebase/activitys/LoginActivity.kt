@@ -1,4 +1,4 @@
-package com.talespalma.menssagebase
+package com.talespalma.menssagebase.activitys
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +11,7 @@ import com.talespalma.menssagebase.utils.toastMenssage
 
 class LoginActivity : AppCompatActivity() {
 
+    //Global vars ------------------------------------------------------------
     val binding by lazy {
         ActivityLoginBinding.inflate(layoutInflater)
     }
@@ -25,19 +26,22 @@ class LoginActivity : AppCompatActivity() {
     lateinit var name:String
 
 
-    // On start
+    // Life cycle ----------------------------------------------------------------
     override fun onStart() {
         super.onStart()
       verifyUserIslogin()
     }
 
-    //On create
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         eventOnCliks()
 
     }
+
+    // Functions --------------------------------------------------------------------------
+
     // All events of clicks
     private fun eventOnCliks() {
        with(binding){
@@ -55,7 +59,7 @@ class LoginActivity : AppCompatActivity() {
                    firebaseAuth.signInWithEmailAndPassword(email,password)
                        .addOnSuccessListener {
                            toastMenssage("Logado com sucesso!!")
-                           startActivity(Intent(applicationContext,MainActivity::class.java))
+                           startActivity(Intent(applicationContext, MainActivity::class.java))
                        }
                        .addOnFailureListener {error ->
                            exceptionsErros(error)
@@ -72,7 +76,7 @@ class LoginActivity : AppCompatActivity() {
     private fun verifyUserIslogin(){
         val userUid = firebaseAuth.currentUser
         if(userUid != null){
-            startActivity(Intent(this,MainActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
             toastMenssage("Usuario está logado")
         }
     }

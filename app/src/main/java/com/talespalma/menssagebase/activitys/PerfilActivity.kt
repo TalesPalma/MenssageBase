@@ -1,4 +1,4 @@
-package com.talespalma.menssagebase
+package com.talespalma.menssagebase.activitys
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -96,7 +96,11 @@ class PerfilActivity : AppCompatActivity() {
         val infoAtt = mapOf(
             "name" to nameUser
         )
-        firebaseFirestore.collection("user").document(firebaseAuth.currentUser?.uid.toString())
+        firebaseFirestore.collection("user")
+            .document(
+                firebaseAuth.currentUser
+                    ?.uid.toString()
+            )
             .update(infoAtt)
     }
 
@@ -106,20 +110,20 @@ class PerfilActivity : AppCompatActivity() {
             firebaseFirestore.collection("user")
                 .document(firebaseAuth.currentUser?.uid.toString())
         reference.get().addOnCompleteListener { taks ->
-                val url = taks.result.get("photos").toString()
-                val nameUser = taks.result.get("name").toString()
-                setInfosUser(nameUser, url)
-            }.addOnFailureListener {
-                Log.i("info_firebase", " ERROR IN SNAPS DOWLOAD FIREBASE : ${it.message}")
-            }
+            val url = taks.result.get("photos").toString()
+            val nameUser = taks.result.get("name").toString()
+            setInfosUser(nameUser, url)
+        }.addOnFailureListener {
+            Log.i("info_firebase", " ERROR IN SNAPS DOWLOAD FIREBASE : ${it.message}")
+        }
     }
 
     //Set user infos
     private fun setInfosUser(nameUser: String, url: String) {
-        if(url.isNotEmpty()){
+        if (url.isNotEmpty()) {
             binding.perfilEditNome.setText(nameUser)
             Picasso.get().load(url).into(binding.perfilImageView);
-        }else{
+        } else {
             binding.perfilEditNome.setText(nameUser)
         }
     }
@@ -132,11 +136,11 @@ class PerfilActivity : AppCompatActivity() {
             .addOnSuccessListener { Taks ->
                 toastMenssage("User update success!!")
                 Taks.metadata?.reference?.downloadUrl?.addOnSuccessListener { url ->
-                        val name = binding.perfilEditNome.text.toString()
-                        val infoAtt = mapOf("photos" to url, "name" to name)
-                        firebaseFirestore.collection("user")
-                            .document(firebaseAuth.currentUser?.uid.toString()).update(infoAtt)
-                    }
+                    val name = binding.perfilEditNome.text.toString()
+                    val infoAtt = mapOf("photos" to url, "name" to name)
+                    firebaseFirestore.collection("user")
+                        .document(firebaseAuth.currentUser?.uid.toString()).update(infoAtt)
+                }
             }.addOnFailureListener {
                 toastMenssage("Erro user photo update")
                 Log.i("info_imageUpload", it.message.toString())

@@ -1,4 +1,4 @@
-package com.talespalma.menssagebase
+package com.talespalma.menssagebase.activitys
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,7 +8,6 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.auth.User
 import com.talespalma.menssagebase.databinding.ActivityRegisterBinding
 import com.talespalma.menssagebase.model.UserModel
 import com.talespalma.menssagebase.utils.toastMenssage
