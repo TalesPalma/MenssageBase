@@ -63,7 +63,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/includeActionbar" />
+        app:layout_constraintTop_toBottomOf="@+id/includeActionbar"
+        tools:listitem="@layout/item_chat_send" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/activity_chat_fab_send"

@@ -8,7 +8,7 @@ import com.squareup.picasso.Picasso
 import com.talespalma.menssagebase.databinding.FragmentContactsBinding
 import com.talespalma.menssagebase.databinding.ItemContactsBinding
 import com.talespalma.menssagebase.model.UserModel
-
+//
 class AdapterContacts(
     val onClick: (UserModel) -> Unit
 ) : Adapter<AdapterContacts.ContactsViewHolder>() {
