@@ -7,13 +7,14 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObject
 import com.squareup.picasso.Picasso
 import com.talespalma.menssagebase.Adapters.AdapterChat
 import com.talespalma.menssagebase.databinding.ActivityChatBinding
+import com.talespalma.menssagebase.model.Conversation
 import com.talespalma.menssagebase.model.Menssage
 import com.talespalma.menssagebase.model.UserModel
 import com.talespalma.menssagebase.utils.Constants
@@ -35,9 +36,11 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private lateinit var listenerRegistrations: ListenerRegistration
-    private  val adapterViewChat = AdapterChat()
+    private val adapterViewChat = AdapterChat()
 
-    private var userDates: UserModel? = null
+    private var destinationDate: UserModel? = null
+    private var userDate: UserModel? = null
+
 
     //Life cycler
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -67,7 +70,7 @@ class ChatActivity : AppCompatActivity() {
     //Functions ------------------------------------------------------
     private fun initListers() {
         val userCorrent = firebaseAuth.currentUser?.uid!!
-        val userDetination = userDates?.id!!
+        val userDetination = destinationDate?.id!!
         val menssageSend = binding.activityChatEditMensage.text.toString()
         listenerRegistrations = firebaseFirestore
             .collection("messages")
@@ -80,7 +83,13 @@ class ChatActivity : AppCompatActivity() {
                 val listMenssages = mutableListOf<Menssage>()
                 dates?.forEach {
                     val convertor = it.toObject(Menssage::class.java)
-                    listMenssages.add(Menssage(convertor?.idUser!!, convertor.menssage!!, convertor.date))
+                    listMenssages.add(
+                        Menssage(
+                            convertor?.idUser!!,
+                            convertor.menssage!!,
+                            convertor.date
+                        )
+                    )
                 }
                 adapterViewChat.updateList(listMenssages)
                 Log.i("teste_list", listMenssages.toString())
@@ -97,19 +106,51 @@ class ChatActivity : AppCompatActivity() {
 
     private fun salveMensagens() {
         val userCorrent = firebaseAuth.currentUser?.uid!!
-        val userDetination = userDates?.id!!
+        val userDetination = destinationDate?.id!!
         val menssageSend = binding.activityChatEditMensage.text.toString()
 
         if (menssageSend.isNotEmpty()) {
             binding.activityChatInputMensage.error = null
-            val menssage = Menssage(userCorrent,menssageSend)
+            val menssage = Menssage(userCorrent, menssageSend)
+            //Save user
             saveMsgFirebase(userCorrent, userDetination, menssage)
-            //Invert funtions
+            val conversationDestination = Conversation(
+                userCorrent,
+                userDetination,
+                destinationDate!!.photos,
+                destinationDate!!.name,
+                menssageSend
+            )
+            salveConversationFireStore(conversationDestination)
+            //Save destinations user
             saveMsgFirebase(userDetination, userCorrent, menssage)
+            val conversationSend = Conversation(
+                userDetination,
+                userCorrent,
+                userDate!!.photos,
+                userDate!!.name,
+                menssageSend
+            )
+            salveConversationFireStore(conversationSend)
+
 
         } else {
             binding.activityChatInputMensage.error = "Você não digitou nada"
         }
+    }
+
+    private fun salveConversationFireStore(conversationDestination: Conversation) {
+        firebaseFirestore
+            .collection("conversations")
+            .document(conversationDestination.idUserCurernt)
+            .collection("last_conversations")
+            .document(conversationDestination.idDetinationsUser)
+            .set(conversationDestination)
+            .addOnFailureListener {
+                toastMenssage("erro salvar menssagens")
+            }
+
+
     }
 
 
@@ -142,32 +183,36 @@ class ChatActivity : AppCompatActivity() {
 
     private fun setInfos() {
         with(binding) {
-            val userPhoto = userDates?.photos ?: ""
-            if (userPhoto.isNotEmpty()) Picasso.get().load(userDates?.photos)
+            val userPhoto = destinationDate?.photos ?: ""
+            if (userPhoto.isNotEmpty()) Picasso.get().load(destinationDate?.photos)
                 .into(activityChatImageView)
-            activityChatTextName.text = userDates?.name
+            activityChatTextName.text = destinationDate?.name
         }
     }
 
     private fun recoverUserInfoFromDestinations() {
-        val extras = intent.extras
-        //Verify origem infos
-        if (extras != null) {
-            val origem = extras.getString("origem")
-            if (origem == Constants.CONTACTS_ORIGEM) {
-
-                userDates = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    extras.getParcelable("userInfos", UserModel::class.java)
-                } else {
-                    extras.getParcelable("userInfos")
+        //recover date user
+//        userDate
+        firebaseFirestore.collection("user")
+            .document(firebaseAuth.currentUser?.uid!!)
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+                val userConvetion = documentSnapshot.toObject(UserModel::class.java)
+                if (userConvetion != null) {
+                    userDate = userConvetion
                 }
-
-            } else if (origem == Constants.CONVERSATIONS_ORIGEM) {
-                //dados conversations
-
-            } else {
-                finish()
             }
+
+        //Recupera idependente da origem um userModel
+        val extras = intent.extras
+        if (extras != null) {
+            destinationDate = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                extras.getParcelable("userInfos", UserModel::class.java)
+            } else {
+                extras.getParcelable("userInfos")
+            }
+        }else{
+            finish()
         }
 
     }

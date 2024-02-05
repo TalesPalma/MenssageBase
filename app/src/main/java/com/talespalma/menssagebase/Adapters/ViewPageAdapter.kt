@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.talespalma.menssagebase.fragments.ContactsFragments
-import com.talespalma.menssagebase.fragments.ConversationsFragments
+import com.talespalma.menssagebase.fragments.MenssageFragments
 
 class ViewPageAdapter(
      val list:List<String>,
@@ -20,7 +20,7 @@ class ViewPageAdapter(
     override fun createFragment(position: Int): Fragment {
         return when(position){
             1 -> ContactsFragments()
-            else->  ConversationsFragments()
+            else->  MenssageFragments()
         }
     }
 
