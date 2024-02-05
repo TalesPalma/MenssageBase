@@ -3,4 +3,7 @@ package com.talespalma.menssagebase.utils
 object Constants {
     const val CONVERSATIONS_ORIGEM  = "conversations_origem"
     const val CONTACTS_ORIGEM = "contacts_origem"
+
+    const val TIPO_SEND = 0
+    const val TIPO_DESTINATION = 1
 }

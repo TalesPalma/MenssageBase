@@ -13,14 +13,14 @@ class AdapterContacts(
     val onClick: (UserModel) -> Unit
 ) : Adapter<AdapterContacts.ContactsViewHolder>() {
 
-    private var interListContacts: List<UserModel> = emptyList()
+
 
     inner class ContactsViewHolder(
         val binding: ItemContactsBinding
     ) : ViewHolder(binding.root) {
 
     }
-
+    private var interListContacts: List<UserModel> = emptyList()
     fun updateList(externList: List<UserModel>) {
         interListContacts = externList
         notifyDataSetChanged()

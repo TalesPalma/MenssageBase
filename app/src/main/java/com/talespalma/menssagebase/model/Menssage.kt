@@ -5,6 +5,7 @@ import com.google.type.DateTime
 import java.util.Date
 
 data class Menssage(
+    val idUser :String = "",
     val menssage: String = "",
     @ServerTimestamp
     val date: Date?=null

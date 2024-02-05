@@ -12,6 +12,7 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObject
 import com.squareup.picasso.Picasso
+import com.talespalma.menssagebase.Adapters.AdapterChat
 import com.talespalma.menssagebase.databinding.ActivityChatBinding
 import com.talespalma.menssagebase.model.Menssage
 import com.talespalma.menssagebase.model.UserModel
@@ -34,7 +35,7 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private lateinit var listenerRegistrations: ListenerRegistration
-
+    private  val adapterViewChat = AdapterChat()
 
     private var userDates: UserModel? = null
 
@@ -49,7 +50,13 @@ class ChatActivity : AppCompatActivity() {
         setActionBar()
         setInfos()
         startClickEventes()
+        startReyclerView()
         initListers()
+    }
+
+    private fun startReyclerView() {
+        binding.activityChatReyclerView.adapter = adapterViewChat
+        binding.activityChatReyclerView.layoutManager = LinearLayoutManager(this)
     }
 
     override fun onDestroy() {
@@ -66,14 +73,16 @@ class ChatActivity : AppCompatActivity() {
             .collection("messages")
             .document(userCorrent)
             .collection(userDetination)
+            .orderBy("date")
             .addSnapshotListener { value, error ->
                 val dates = value?.documents
 
                 val listMenssages = mutableListOf<Menssage>()
                 dates?.forEach {
                     val convertor = it.toObject(Menssage::class.java)
-                    listMenssages.add(Menssage(convertor?.menssage!!, convertor.date))
+                    listMenssages.add(Menssage(convertor?.idUser!!, convertor.menssage!!, convertor.date))
                 }
+                adapterViewChat.updateList(listMenssages)
                 Log.i("teste_list", listMenssages.toString())
             }
     }
@@ -93,7 +102,7 @@ class ChatActivity : AppCompatActivity() {
 
         if (menssageSend.isNotEmpty()) {
             binding.activityChatInputMensage.error = null
-            val menssage = Menssage(menssageSend)
+            val menssage = Menssage(userCorrent,menssageSend)
             saveMsgFirebase(userCorrent, userDetination, menssage)
             //Invert funtions
             saveMsgFirebase(userDetination, userCorrent, menssage)
@@ -142,7 +151,6 @@ class ChatActivity : AppCompatActivity() {
 
     private fun recoverUserInfoFromDestinations() {
         val extras = intent.extras
-
         //Verify origem infos
         if (extras != null) {
             val origem = extras.getString("origem")
@@ -156,6 +164,7 @@ class ChatActivity : AppCompatActivity() {
 
             } else if (origem == Constants.CONVERSATIONS_ORIGEM) {
                 //dados conversations
+
             } else {
                 finish()
             }
