@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.Query
 import com.talespalma.menssagebase.Adapters.AdapterMenssages
 import com.talespalma.menssagebase.activitys.ChatActivity
 import com.talespalma.menssagebase.databinding.FragmentMenssageBinding
@@ -34,14 +35,14 @@ class MenssageFragments : Fragment() {
     private var _binding: FragmentMenssageBinding? = null
     private val binding: FragmentMenssageBinding get() = _binding!!
 
-    private val adapterMenssages = AdapterMenssages(){conversation ->
-        val intent = Intent(context,ChatActivity::class.java)
+    private val adapterMenssages = AdapterMenssages() { conversation ->
+        val intent = Intent(context, ChatActivity::class.java)
         val usuario = UserModel(
             id = conversation.idDetinationsUser,
             name = conversation.name,
             photos = conversation.photo
         )
-        intent.putExtra("userInfos",usuario)
+        intent.putExtra("userInfos", usuario)
         startActivity(intent)
     }
 
@@ -80,11 +81,12 @@ class MenssageFragments : Fragment() {
                 .collection("conversations")
                 .document(idUSer)
                 .collection("last_conversations")
+                .orderBy("date",Query.Direction.DESCENDING)
                 .addSnapshotListener { value, error ->
                     val documents = value?.documents
                     val listDatesConversations = mutableListOf<Conversation>()
 
-                    documents?.forEach {documentSnapshot ->
+                    documents?.forEach { documentSnapshot ->
                         val date = documentSnapshot.toObject(Conversation::class.java)
                         listDatesConversations.add(date!!)
                     }
@@ -94,11 +96,15 @@ class MenssageFragments : Fragment() {
         }
 
     }
-    private fun configReyclerView(){
-        binding.fragmentMenssageRecyclerView.adapter = adapterMenssages
-        binding.fragmentMenssageRecyclerView.layoutManager = LinearLayoutManager(context)
-    }
 
+    private fun configReyclerView() {
+        binding.fragmentMenssageRecyclerView.adapter = adapterMenssages
+        binding.fragmentMenssageRecyclerView.layoutManager = LinearLayoutManager(
+            context,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
+    }
 
 
 }
