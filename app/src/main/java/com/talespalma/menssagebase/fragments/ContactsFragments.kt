@@ -75,6 +75,12 @@ class ContactsFragments : Fragment() {
 
     //Add infos in list view from firebase
     private fun addListContacs() {
+        binding.apply {
+            swapiRefresh.setOnRefreshListener {
+                ContactsReyclerView.adapter?.notifyDataSetChanged()
+                swapiRefresh.isRefreshing = false
+            }
+        }
         eventListerRegistration = firebaseFirestore
             .collection("user")
             .addSnapshotListener { querySnapshot, error ->

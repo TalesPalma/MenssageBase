@@ -44,6 +44,7 @@ android {
 
 dependencies {
     //Firebase requisitos
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
     implementation("com.google.firebase:firebase-analytics")//Google analytics
     implementation("com.google.firebase:firebase-auth")//Google auth
